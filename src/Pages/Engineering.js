@@ -15,7 +15,7 @@ const NAV_SECTIONS = [
   { id: "flows", label: "System Flows" },
   { id: "deepdives", label: "Deep Dives" },
   { id: "future", label: "Future Enhancements" },
-  { id: "team", label: "Team" },
+  { id: "contact", label: "Contact" },
 ];
 
 const TECH_STACK = [
