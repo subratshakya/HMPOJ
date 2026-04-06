@@ -1,0 +1,53 @@
+.submitbody {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+
+  flex-direction: column;
+  /* background-image: url("D:\downloads\peakpx.jpg"); */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#submitcode {
+  margin-top: 5%;
+}
+.editor-container {
+  width: 70%;
+}
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+.selectbody {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+}
+.select {
+  margin-right: 3%;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.button {
+  margin-bottom: 5%;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #45a049;
+}

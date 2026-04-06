@@ -1,0 +1,32 @@
+services:
+  # 1. MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: hmpoj-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: HMP_OJ
+
+  # 2. Redis Cache (For "reducing database load by 40%")
+  redis:
+    image: redis:alpine
+    container_name: hmpoj-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # 3. RabbitMQ Message Broker (For "event-driven architecture")
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: hmpoj-rabbitmq
+    ports:
+      - "5672:5672" # Main RabbitMQ port
+      - "15672:15672" # Admin/Management Dashboard UI
+    restart: always
+
+volumes:
+  mongodb_data:
