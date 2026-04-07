@@ -102,11 +102,11 @@ const Homepage = () => {
             onClick={() => nav("/engineering")}
           >
             <img
-              src="https://i.pinimg.com/originals/47/0d/4e/470d4e8e95a97f9e6a2a7e7b8e6b4f54.gif"
-              alt="bg"
+              src="/Engineering.gif"
+              alt="Engineering bg"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
-            <div className="absolute inset-0 bg-black/80"></div>
+            <div className="absolute inset-0 bg-black/40"></div>
             <div className="p-6 relative flex flex-col justify-end">
               <span className="font-mono text-xs tracking-widest uppercase text-gray-400 mb-1">Deep Dive</span>
               <h4 className="block antialiased tracking-normal font-mono text-2xl font-semibold leading-snug text-white">

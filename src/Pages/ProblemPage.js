@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import LoadingComponent from "../components/loading";
 import Header from "../components/header";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useClipboard } from "use-clipboard-copy";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
@@ -12,10 +11,14 @@ const ProblemPage = () => {
   const [problem, setProblem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const _id = useParams().problemid;
+  const { problemid: _id, contestid } = useParams();
 
   const handleSubmit = () => {
-    nav(`/submit/${_id}`);
+    if (contestid) {
+      nav(`/contest/${contestid}/submit/${_id}`);
+    } else {
+      nav(`/submit/${_id}`);
+    }
   };
   const clipboard = useClipboard();
 
@@ -65,7 +68,17 @@ const ProblemPage = () => {
     <>
       <Header />
       <div className="font-mono container mx-auto px-4">
-        <header className="font-mono header bg-gray-900 text-white py-5 text-center">
+        {contestid && (
+          <div className="bg-gray-100 dark:bg-gray-800 py-3 px-6 mt-4 rounded-lg flex items-center justify-between shadow-sm">
+            <Link to={`/contest/${contestid}`} className="text-blue-600 dark:text-blue-400 hover:underline font-bold">
+              ← Back to Contest Arena
+            </Link>
+            <Link to={`/contest/${contestid}/leaderboard`} className="text-gray-700 dark:text-gray-200 hover:underline font-bold">
+              🏆 Leaderboard
+            </Link>
+          </div>
+        )}
+        <header className="font-mono header bg-gray-900 text-white py-5 text-center mt-4">
           <h1 className="font-mono title text-xl font-extrabold md:text-3xl">
             {problem.title}
           </h1>

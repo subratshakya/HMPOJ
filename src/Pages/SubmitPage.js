@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import LoadingComponent from "../components/loading";
 import Footer from "../components/footer";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 function SubmissionPage() {
   const [error, setError] = useState(null);
@@ -20,7 +20,8 @@ function SubmissionPage() {
   const [results, setResults] = useState([]);
   const [response, setResponse] = useState(null);
   const [tableShow, setTableShow] = useState(false);
-  const _id = useParams().problemid;
+  const { problemid, contestid } = useParams();
+  const _id = problemid;
 
   const handleCodeChange = (value) => {
     setCode(value);
@@ -52,28 +53,63 @@ function SubmissionPage() {
         return;
       }
 
+      const userObj = JSON.parse(storedUser);
+      const user = userObj.user || userObj;
+
       axios.defaults.withCredentials = true;
+      // Get baseline submissions count to detect when the async worker finishes
+      const baselineRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/user/${user._id || user.id}/submissions`);
+      const baselineCount = baselineRes.data.submissions ? baselineRes.data.submissions.length : 0;
+
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/submissions/enqueue`,
         {
           problemId: _id,
           code,
-          language
+          language,
+          contestId: contestid || undefined
         }
       );
 
       if (response.data.success) {
-        toast.success("Code actively queued for async execution. Navigate to your Dashboard to view the final Result!");
+        toast.info("Submitting code to Judge0 sandbox...");
+        // Fast polling to await worker completion
+        const pollTimer = setInterval(async () => {
+          try {
+            const checkRes = await axios.get(`${process.env.REACT_APP_API_URL}/api/user/${user._id || user.id}/submissions`);
+            if (checkRes.data.submissions && checkRes.data.submissions.length > baselineCount) {
+              clearInterval(pollTimer);
+              const latest = checkRes.data.submissions[0];
+              
+              setResults([{
+                status: { description: latest.status },
+                language: { name: latest.language == "52" ? "C++" : latest.language == "71" ? "Python" : latest.language == "91" ? "Java" : "Node.js" },
+                wall_time: 0,
+                memory: 0
+              }]);
+              setTableShow(true);
+              setIsLoading(false);
+              
+              if (latest.status === "Accepted") toast.success("✅ Solution Accepted!");
+              else toast.error(`❌ ${latest.status}`);
+            }
+          } catch(e) {}
+        }, 1500);
+
+        // Fail-safe timeout 30s
+        setTimeout(() => {
+          clearInterval(pollTimer);
+          setIsLoading(false);
+        }, 30000);
       }
     } catch (error) {
+      setIsLoading(false);
       if (error.response && error.response.status === 401) {
         toast.info("You are not authorized. Please log in first.");
       } else {
         toast.error("Failed to enqueue submission due to a server error.");
       }
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -82,6 +118,22 @@ function SubmissionPage() {
       <Header />
 
       <div className="submitbody">
+        {contestid && (
+          <div className="bg-gray-100 dark:bg-gray-800 py-3 px-6 mb-4 mt-2 max-w-4xl mx-auto rounded-lg flex items-center justify-between shadow-sm font-mono">
+            <div className="flex gap-4">
+              <Link to={`/contest/${contestid}`} className="text-gray-600 dark:text-gray-300 hover:underline font-bold">
+                ← Arena
+              </Link>
+              <span className="text-gray-400">|</span>
+              <Link to={`/contest/${contestid}/problem/${_id}`} className="text-blue-600 dark:text-blue-400 hover:underline font-bold">
+                ← Read Problem
+              </Link>
+            </div>
+            <Link to={`/contest/${contestid}/leaderboard`} className="text-gray-700 dark:text-gray-200 hover:underline font-bold">
+              🏆 Leaderboard
+            </Link>
+          </div>
+        )}
         <h2 id="submitcode">Submit your code</h2>
         <div className="editor-container">
           <label className="label">Code:</label>

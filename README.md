@@ -26,6 +26,49 @@ HMP OJ is a high-performance, scalable online judge platform built to handle hig
 *   **Containerization**: One-command setup using **Docker Compose** to orchestrate MongoDB, Redis, and RabbitMQ.
 *   **Unified Pipeline**: Simplified development environment local setup, ensuring consistency across different machines.
 
+---
+
+## ⚡ Quick Start - How to Run locally
+
+Follow these **4 simple steps** to run the complete event-driven stack locally:
+
+### 1. Start Infrastructure (Docker)
+Ensure Docker Desktop is running. This command spins up MongoDB, Redis, and RabbitMQ:
+```bash
+docker-compose up -d
+```
+
+### 2. Configure Environment
+Navigate to the backend directory and create a `.env` file (you can use your IDE or text editor). Paste all the variable keys outlined in the **Environment Template** below:
+```bash
+cd backend
+# Create the .env file here
+```
+
+### 3. Install & Seed Database
+Install dependencies and seed a test problem so you can start coding immediately:
+```bash
+yarn install
+node seed.js
+```
+
+### 4. Launch Application
+In **two separate terminals**, run the server and the frontend React application:
+
+**Terminal 1 (Backend):**
+```bash
+cd backend
+yarn server:dev
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd ..
+yarn install
+yarn start
+```
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: React.js, Tailwind CSS, CodeMirror
@@ -43,8 +86,12 @@ A complete guide to everything you can do on HMP OJ. Our frontend is a monolithi
 ### 🏠 Public Pages
 *   **`/` (Homepage)**: An animated, responsive landing page offering quick navigation cards to Practice, Chat, Blog, Engineering, and About sections. Features dynamic UI elements and platform statistics.
 *   **`/engineering` (Engineering Deep-Dive)**: A dedicated technical landing page for system architecture. Features interactive scroll-spy navigation, custom SVG diagrams (HLD, DB ERD, State Machine, Auth Flow), and deep-dives into micro-decisions.
-
 *   **`/contact`**: Secure Web3Forms integration. Users can email platform administrators directly; submission flow relies completely on frontend API calls, keeping our servers safe from mail-bombs.
+
+### 🏆 Codeforces-Style Contest Arena
+*   **`/contests`**: Central hub filtering Upcoming, Active, and Past algorithmic competitions.
+*   **`/contest/:id`**: The specialized Arena lobby bounding problem visibility to strict timer constraints.
+*   **`/contest/:id/leaderboard`**: Real-time standings aggregating Codeforces-style point decay (based on elapsed minutes) and flat score penalties for wrong attempts.
 
 ### 🔐 Identity & Authentication
 *   **`/login` & `/signup`**: Clean, modern interfaces for standard credential registration or one-click **Google OAuth 2.0** login. Generates secure `httpOnly` JWT cookies.
@@ -69,51 +116,12 @@ A complete guide to everything you can do on HMP OJ. Our frontend is a monolithi
 *   **`/chat`**: A real-time, global **Socket.io** powered discussion room where concurrent users can debug together.
 
 ### ⚙️ System Administration (Role: Admin Only)
-*   **`/createProblem`**: Form to draft new platform algorithms. Admins can define titles, descriptions, constraints, difficulty multipliers (Easy=10, Medium=20, Hard=30), and upload rigorous test cases.
+*   **`/createProblem`**: Form to draft new platform algorithms. Admins can define titles, descriptions, constraints, difficulty multipliers, and upload rigorous test cases.
+*   **`/admin/contest/create`**: Assembly dashboard allowing admins to fetch existing Database problems, group them into an Arena, assign custom Max Points, and schedule active countdown cycles.
 *   **Global User Governance**: Through the Dashboard, Admins can manually edit user profiles, bump users to Admin status, or hard-delete bad actors from the database.
 
 ### 🛑 Fallbacks
 *   **`*` (404 Default)**: A clean, user-friendly fallback page catching any unresolved UI routes, prompting users back to safety.
-
-## � Quick Start - How to Run
-
-Follow these **4 simple steps** to run the complete stack locally:
-
-### 1. Start Infrastructure (Docker)
-Ensure Docker Desktop is running. This command starts MongoDB, Redis, and RabbitMQ:
-```bash
-docker-compose up -d
-```
-
-### 2. Configure Environment
-Create a `.env` file in the `/backend` directory and add your keys (refer to the **Template** below):
-```bash
-cd backend
-touch .env
-```
-
-### 3. Install & Seed Database
-Install dependencies and seed a test problem so you can start coding immediately:
-```bash
-yarn install
-node seed.js
-```
-
-### 4. Launch Application
-In **two separate terminals**, run the server and the frontend:
-
-**Terminal 1 (Backend):**
-```bash
-cd backend
-yarn server:dev
-```
-
-**Terminal 2 (Frontend):**
-```bash
-cd ..
-yarn install
-yarn start
-```
 
 ---
 

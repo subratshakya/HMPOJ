@@ -65,31 +65,37 @@ async function startWorker() {
                     const finalStatus = isAccepted ? "Accepted" : (descriptions.find(s => s !== "Accepted") || "Runtime Error");
 
                     // Save submission history
-                    await Submission.create({
+                    const submissionDoc = {
                         user: job.userId,
                         problem: job.problemId,
                         code: job.code,
                         language: job.language,
                         status: finalStatus,
-                    });
+                    };
+                    if (job.contestId) {
+                        submissionDoc.contest = job.contestId;
+                    }
+                    await Submission.create(submissionDoc);
 
-                    // Update User points globally
-                    if (isAccepted) {
-                        let pointsToAdd = 0;
-                        switch (problem.difficulty) {
-                            case "hard": pointsToAdd = 30; break;
-                            case "medium": pointsToAdd = 20; break;
-                            case "easy": pointsToAdd = 10; break;
+                    // Update User points globally ONLY for practice mode (dynamic contest scoring is separate)
+                    if (!job.contestId) {
+                        if (isAccepted) {
+                            let pointsToAdd = 0;
+                            switch (problem.difficulty) {
+                                case "hard": pointsToAdd = 30; break;
+                                case "medium": pointsToAdd = 20; break;
+                                case "easy": pointsToAdd = 10; break;
+                            }
+                            await User.findByIdAndUpdate(job.userId, {
+                                $inc: { questionsSolved: 1, pointsEarned: pointsToAdd },
+                                $addToSet: { solvedProblems: job.problemId }
+                            });
+                        } else {
+                            // deduct points for wrong
+                            await User.findByIdAndUpdate(job.userId, {
+                                $inc: { pointsEarned: -5 }
+                            });
                         }
-                        await User.findByIdAndUpdate(job.userId, {
-                            $inc: { questionsSolved: 1, pointsEarned: pointsToAdd },
-                            $addToSet: { solvedProblems: job.problemId }
-                        });
-                    } else {
-                        // deduct points for wrong
-                        await User.findByIdAndUpdate(job.userId, {
-                            $inc: { pointsEarned: -5 }
-                        });
                     }
 
                     console.log(`[Queue] Job ${job.jobId} completed successfully. Final Status: ${finalStatus}`);

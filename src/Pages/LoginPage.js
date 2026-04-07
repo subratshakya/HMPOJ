@@ -104,22 +104,22 @@ const LoginPage = () => {
                   onChange={handlePasswordChange}
                 />
               </div>
-              <div class="flex items-center justify-between gap-4">
-                <div class="flex items-center">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
                   <input
-                    class="h-4 w-4 ml-1 shrink-0 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                    class="h-4 w-4 shrink-0 text-gray-600 focus:ring-gray-500 border-gray-300 rounded cursor-pointer"
                     type="checkbox"
                     id="showPasswordCheckbox"
                     checked={showPassword}
                     onChange={handleShowPasswordToggle}
                   />
+                  <label htmlFor="showPasswordCheckbox" class="text-sm cursor-pointer">
+                    Show password
+                  </label>
                 </div>
-                <label htmlFor="showPasswordCheckbox" class="mr-60">
-                  Show password
-                </label>
-                <div class="mt-2 text-right">
+                <div>
                   <NavLink to="/forgotpassword">
-                    <span class="text-blue-600 text-sm font-semibold hover:underline">
+                    <span class="text-blue-600 text-sm font-semibold hover:underline whitespace-nowrap">
                       Forgot your password?
                     </span>
                   </NavLink>

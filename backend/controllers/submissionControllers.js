@@ -5,10 +5,7 @@ const crypto = require("crypto");
 // Endpoint to enqueue a code submission instead of blocking the request
 exports.enqueueSubmission = async (req, res, next) => {
     try {
-        const { problemId, code, language, isAccepted } = req.body;
-
-        // In a real production system, the frontend shouldn't pass 'isAccepted'. 
-        // The worker should figure it out! But for now we just pass along the payload so the backend executes it exactly the same.
+        const { problemId, code, language, contestId } = req.body;
 
         // We get the user ID from the JWT auth token
         const userId = req.user.id;
@@ -22,8 +19,7 @@ exports.enqueueSubmission = async (req, res, next) => {
             problemId,
             code,
             language,
-            // Temporarily letting frontend pass testcase variables or just passing the raw code to the worker. 
-            // The logic here is that the frontend sends the code, and the backend says "Got it!"
+            contestId, // Optional reference for contest submissions
         };
 
         // Push the heavy logic into the background queue

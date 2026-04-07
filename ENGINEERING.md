@@ -10,8 +10,9 @@ The platform is engineered to decouple the "Acceptance" of code from its "Execut
 
 ## 🚀 Features
 - **Real-Time Code Execution**: Support for multiple languages (C++, Java, Python, JavaScript) via Judge0 integration.
-- **Asynchronous Judging**: Submissions are handled in the background, preventing API timeouts and ensuring reliability.
+- **Async Judging**: Submissions are handled in the background, preventing API timeouts and ensuring reliability.
 - **Dynamic Leaderboard**: Real-time ranking updates with efficient Redis-based caching.
+- **Codeforces-Style Contests**: Timed, real-time coding arenas featuring dynamic score decay based on elapsed minutes and flat penalties for wrong attempts.
 - **Interactive Discuss Section**: Integrated blogs and discussion forums for community engagement.
 - **Robust RBAC**: Role-based access control for Admins (problem management) and Users (solving problems).
 - **Dark Mode UI**: A premium, modern dashboard built with Tailwind CSS for enhanced developer experience.
@@ -90,6 +91,7 @@ HMP OJ uses a document-oriented approach to manage complex relationships between
 
 - **User**: Stores profile, salted passwords (bcrypt), points, and a history of solved problem IDs.
 - **Problem**: Contains problem statements, difficulty (Easy/Med/Hard), time/memory limits, and references to test cases.
+- **Contest**: Tracks specialized, timed competitive arenas alongside customized mapping of problem base points and active participants.
 - **Submission**: A detailed log of every code attempt, including source code, language, status, and execution time.
 - **Blog**: Community posts with comments and upvotes.
 
@@ -111,6 +113,12 @@ The Backend does not trust any user-provided metadata for judging.
 - **Identity**: `userId` is extracted from the JWT token at the API boundary, never from the body.
 - **Integrity**: Source code is sanitized and sent via HTTPS to Judge0 with unique tokens.
 - **Isolation**: Judge0 runs code in a network-less, memory-capped container to prevent host compromise.
+
+### ⚔️ Time-Decay Scoring Engine
+Contests utilize a specialized active Leaderboard. Because submissions happen asynchronously, global scoring rules had to be bypassed during active contests strictly within the `worker.js` thread. Points are dynamically calculated completely on the fly in an Aggregation Pipeline that:
+1. Calculates minutes elapsed between the `startTime` and `submissionTime`.
+2. Diminishes the `basePoints` linearly down to a hard floor of 30%.
+3. Flattens out `50` points retrospectively for every `Wrong Answer` / `Runtime Error` submitted prior to hitting an `Accepted` resolution.
 
 ### 🗃️ Database Strategy
 We use **MongoDB** for its schema-less flexibility, which is vital for:
@@ -146,7 +154,6 @@ We use **Socket.io** to provide an "instantly alive" experience.
 
 ## 🔮 Future Enhancements
 - [ ] **Custom Docker Judge**: Moving from Judge0 API to a self-hosted Dockerized judge for even lower latency.
-- [ ] **Contest Mode**: Support for timed contests with penalty points and automatic start/stop.
 - [ ] **Plagiarism Detection**: Integrating MOSS (Measure Of Software Similarity) to detect code copying.
 - [ ] **Redis RedLock**: Implementing distributed locking to handle concurrent contest registrations safely.
 

@@ -86,6 +86,17 @@ function Header() {
                 </li>
 
                 <li class="flex items-center h-full">
+                  <NavLink exact="true" to="/contests">
+                    <a
+                      class="text-black  hover:scale-110 dark:text-white font-mono text-lg flex items-center h-full mt-4"
+                      href="#"
+                    >
+                      Contests
+                    </a>
+                  </NavLink>
+                </li>
+
+                <li class="flex items-center h-full">
                   <NavLink exact="true" to="/chat">
                     <a
                       class="text-black  hover:scale-110 dark:text-white font-mono text-lg flex items-center h-full mt-4"
@@ -193,12 +204,12 @@ function Header() {
                     </NavLink>
                   </li>
                   <li class="flex items-center h-full">
-                    <NavLink exact="true" to="/contest">
+                    <NavLink exact="true" to="/contests">
                       <a
                         class="text-black  hover:scale-110 dark:text-white font-mono text-lg flex items-center h-full mt-4"
                         href="#"
                       >
-                        Contest
+                        Contests
                       </a>
                     </NavLink>
                   </li>

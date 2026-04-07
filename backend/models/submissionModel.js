@@ -13,6 +13,11 @@ const submissionSchema = new mongoose.Schema(
             ref: "Problem",
             required: true,
         },
+        contest: {
+            type: ObjectId,
+            ref: "Contest",
+            required: false,
+        },
         code: {
             type: String,
             required: true,

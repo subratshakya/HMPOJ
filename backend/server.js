@@ -16,7 +16,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/hmp_oj")
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27018/hmp_oj")
   .then(() => console.log("MongoDb connected"))
   .catch((err) => console.log("MongoDb error", err));
 
@@ -70,11 +70,14 @@ const userRoutes = require("./routes/userRoutes");
 const problemRoutes = require("./routes/problemRoutes.js");
 const blogRoutes = require("./routes/blogRoutes");
 const submissionRoutes = require("./routes/submissionRoutes");
+const contestRoutes = require("./routes/contestRoutes");
+
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", problemRoutes);
 app.use("/api", blogRoutes);
 app.use("/api", submissionRoutes);
+app.use("/api", contestRoutes);
 
 // Error middleware
 app.use(errorHandler);

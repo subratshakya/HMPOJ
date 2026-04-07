@@ -21,6 +21,10 @@ import Chatroom from "./Pages/Chat";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
 import Engineering from "./Pages/Engineering";
+import ContestHub from "./Pages/ContestHub";
+import ContestArena from "./Pages/ContestArena";
+import ContestLeaderboard from "./Pages/ContestLeaderboard";
+import CreateContest from "./Pages/CreateContest";
 
 function App() {
   return (
@@ -42,6 +46,14 @@ function App() {
           <Route path={"/blog/:blogid"} element={<BlogShow />}></Route>
           <Route path={`/profile/:username`} element={<Dashboard />}></Route>
           <Route path="/problemset" element={<ProblemSet />}></Route>
+
+          <Route path="/contests" element={<ContestHub />}></Route>
+          <Route path="/contest/:contestid" element={<ContestArena />}></Route>
+          <Route path="/contest/:contestid/leaderboard" element={<ContestLeaderboard />}></Route>
+          <Route path="/contest/:contestid/submit/:problemid" element={<SubmissionPage />}></Route>
+          <Route path="/contest/:contestid/problem/:problemid" element={<ProblemPage />}></Route>
+          <Route path="/admin/contest/create" element={<CreateContest />}></Route>
+
           <Route path={`/problem/:problemid`} element={<ProblemPage />}></Route>
           <Route path={"/createblog"} element={<BlogCreate />}></Route>
           <Route path={"/createProblem"} element={<ProblemForm />}></Route>

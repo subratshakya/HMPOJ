@@ -10,6 +10,7 @@ const ProblemList = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
+  const [userSubs, setUserSubs] = useState({});
   const difficulty = "";
   const problemType = "";
 
@@ -17,12 +18,31 @@ const ProblemList = () => {
     const fetchProblems = async () => {
       try {
         axios.defaults.withCredentials = true;
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/allProblems?pageNumber=${page}&difficulty=${difficulty}&problemType=${problemType}`
-        );
-        setProblems(response.data.problems);
-        setPage(response.data.page);
-        setPages(response.data.pages);
+        const userStr = localStorage.getItem("user");
+        const user = userStr ? JSON.parse(userStr).user || JSON.parse(userStr) : null;
+        const userId = user ? (user._id || user.id) : null;
+
+        const [probRes, subRes] = await Promise.all([
+          axios.get(
+            `${process.env.REACT_APP_API_URL}/api/allProblems?pageNumber=${page}&difficulty=${difficulty}&problemType=${problemType}`
+          ),
+          userId ? axios.get(`${process.env.REACT_APP_API_URL}/api/user/${userId}/submissions`) : Promise.resolve({ data: { submissions: [] } })
+        ]);
+
+        if (subRes.data.submissions) {
+          const sm = {};
+          subRes.data.submissions.forEach(s => {
+             const pid = s.problem._id || s.problem;
+             if (sm[pid] === "Accepted") return;
+             if (s.status === "Accepted") sm[pid] = "Accepted";
+             else if (!sm[pid] || sm[pid] === "Pending") sm[pid] = s.status;
+          });
+          setUserSubs(sm);
+        }
+
+        setProblems(probRes.data.problems);
+        setPage(probRes.data.page);
+        setPages(probRes.data.pages);
         setLoading(false);
       } catch (error) {
         if (error.response && error.response.data) {
@@ -63,6 +83,9 @@ const ProblemList = () => {
               <thead className="ltr:text-left rtl:text-right ">
                 <tr>
                   <th className="whitespace-nowrap px-4 py-2 text-lg font-medium text-gray-900">
+                    Status
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-2 text-lg font-medium text-gray-900">
                     Title
                   </th>
                   <th className="whitespace-nowrap px-4 py-2 font-medium text-lg text-gray-900">
@@ -79,7 +102,11 @@ const ProblemList = () => {
                   <tr
                     key={problem._id}
                     onClick={() => handlenavigation(problem._id)}
+                    className="cursor-pointer hover:bg-gray-50 transition"
                   >
+                    <td className="whitespace-nowrap px-4 py-2 text-base font-semibold text-gray-900 text-center">
+                      {userSubs[problem._id] === "Accepted" ? "✅" : userSubs[problem._id] === "Pending" ? "🕒" : userSubs[problem._id] ? "❌" : "—"}
+                    </td>
                     <td className="whitespace-nowrap px-4 py-2 text-base font-medium text-gray-900">
                       {problem.title}
                     </td>

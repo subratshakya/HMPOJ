@@ -88,6 +88,7 @@ const TECH_STACK = [
 const FEATURES = [
   { icon: "🚀", title: "Async Code Execution", desc: "Submissions are enqueued via RabbitMQ and judged by a background worker, preventing any API timeout." },
   { icon: "🏆", title: "Live Leaderboard", desc: "Redis-cached global rankings updated in real-time as verdicts are processed." },
+  { icon: "⚔️", title: "Codeforces-Style Contests", desc: "Timed coding arenas with real-time score decay based on elapsed minutes and wrong-answer penalties." },
   { icon: "💬", title: "Real-Time Chat", desc: "Socket.io powered community chat rooms for discussing problems while you code." },
   { icon: "🔐", title: "Secure Auth & RBAC", desc: "JWT in httpOnly cookies + Google OAuth 2.0 with Admin / User role separation." },
   { icon: "📝", title: "Blog Platform", desc: "Full blog system for editorial write-ups and community posts." },
@@ -178,10 +179,22 @@ socket.on('submissionResult', ({ status }) => {
   setVerdict(status);
 });`,
   },
+  {
+    icon: "⚔️",
+    title: "Time-Decay Scoring Engine",
+    content:
+      "When evaluating Contest Leaderboards, scores aren't static. A real-time aggregation pipeline maps submissions to the active contest, calculates the 'minutesElapsed' since the contest start, applies a decay algorithm to the problem's base points, and forcefully subtracts 50 points for every prior Wrong Answer attempt until an Accepted verdict is finally reached.",
+    code: `// Dynamic point calculation on-the-fly
+const minutesElapsed = Math.floor((submitTime - startTime) / 60000);
+const rawDecay = Math.floor(basePoints * ((250 - minutesElapsed) / 250));
+const finalPoints = Math.max(rawDecay, basePoints * 0.3);
+const penalty = Math.max(0, attempts - 1) * 50;
+
+userTotalPoints += Math.max(finalPoints - penalty, 0);`,
+  },
 ];
 
 const FUTURE = [
-  { color: "bg-yellow-400", label: "Planned", title: "Contest Mode", desc: "Timed contests with penalty scoring, auto start/stop, and live standings." },
   { color: "bg-yellow-400", label: "Planned", title: "Custom Docker Judge", desc: "Self-hosted Judge0 replacement for lower latency and full resource control." },
   { color: "bg-yellow-400", label: "Planned", title: "Plagiarism Detection", desc: "MOSS integration to flag suspiciously similar code across submissions." },
   { color: "bg-green-400", label: "In Progress", title: "Redis RedLock", desc: "Distributed locking to safely handle concurrent contest registrations." },
@@ -387,6 +400,14 @@ function DatabaseSchemaDiagram() {
       { f: "language", t: "Number"              },
       { f: "status",   t: "String"              },
     ], 258, 240, "#92400e", "#fef3c7"),
+    mkBox("Contest", [
+      { f: "_id",        t: "ObjectId", pk: true },
+      { f: "title",      t: "String"             },
+      { f: "startTime",  t: "Date"               },
+      { f: "endTime",    t: "Date"               },
+      { f: "problems",   t: "Obj[prob, pts]"     },
+      { f: "participants",t: "ObjectId[ ]"       },
+    ], 495, 200, "#7c3aed", "#ede9fe"),
     mkBox("Blog", [
       { f: "_id",       t: "ObjectId", pk: true },
       { f: "author",    t: "→ User",   fk: true },
@@ -780,6 +801,7 @@ const EngineeringPage = () => {
                 {[
                   { name: "User", note: "Central entity. Tracks pointsEarned (+10/20/30 accepted, –5 wrong) and a solvedProblems set to prevent duplicate scoring." },
                   { name: "Problem", note: "Owns testcases as a populated reference array. Worker fetches all testcases in a single populate() call for batch Judge0 submission." },
+                  { name: "Contest", note: "Maps problems to custom base points and securely tracks registered participants. Worker checks this to defer standard user points during timed arenas." },
                   { name: "Submission", note: "Append-only log — never updated, only created. Status progresses from Pending via the worker; historical verdicts are preserved." },
                   { name: "Blog", note: "Community editorial layer. Author references the User model so profile & role information is always consistent via populate()." },
                 ].map((c) => (
