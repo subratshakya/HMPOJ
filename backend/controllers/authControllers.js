@@ -59,7 +59,7 @@ const sendTokenResponse = async (user, codeStatus, res) => {
       maxAge: 60 * 60 * 1000,
       httpOnly: true,
       secure: isProduction,
-      sameSite: "lax",
+      sameSite: isProduction ? "none" : "lax",
     })
     .json({
       token,
