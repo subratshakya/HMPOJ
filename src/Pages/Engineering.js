@@ -15,7 +15,8 @@ const NAV_SECTIONS = [
   { id: "flows", label: "System Flows" },
   { id: "deepdives", label: "Deep Dives" },
   { id: "future", label: "Future Enhancements" },
-  { id: "contact", label: "Contact" },
+  { id: "demo", label: "System Demo" },
+  { id: "contact", label: "Contact Developer" },
 ];
 
 const TECH_STACK = [
@@ -322,12 +323,12 @@ function HLDDiagram() {
 function StateMachineDiagram() {
   const W = 130; const H = 36; const R = 6;
   const states = [
-    { id: "pending",  label: "Pending",       x: 18,  y: 87, fill: "#f3f4f6", stroke: "#9ca3af", text: "#374151" },
-    { id: "queued",   label: "Queued",        x: 198, y: 87, fill: "#dbeafe", stroke: "#93c5fd", text: "#1e40af" },
-    { id: "exec",     label: "Executing",     x: 378, y: 87, fill: "#fef3c7", stroke: "#fcd34d", text: "#92400e" },
-    { id: "accepted", label: "✓  Accepted",   x: 558, y: 20, fill: "#d1fae5", stroke: "#6ee7b7", text: "#065f46" },
-    { id: "wrong",    label: "Wrong Answer",  x: 558, y: 87, fill: "#fee2e2", stroke: "#fca5a5", text: "#991b1b" },
-    { id: "runtime",  label: "Runtime Error", x: 558, y: 154,fill: "#ffedd5", stroke: "#fdba74", text: "#9a3412" },
+    { id: "pending", label: "Pending", x: 18, y: 87, fill: "#f3f4f6", stroke: "#9ca3af", text: "#374151" },
+    { id: "queued", label: "Queued", x: 198, y: 87, fill: "#dbeafe", stroke: "#93c5fd", text: "#1e40af" },
+    { id: "exec", label: "Executing", x: 378, y: 87, fill: "#fef3c7", stroke: "#fcd34d", text: "#92400e" },
+    { id: "accepted", label: "✓  Accepted", x: 558, y: 20, fill: "#d1fae5", stroke: "#6ee7b7", text: "#065f46" },
+    { id: "wrong", label: "Wrong Answer", x: 558, y: 87, fill: "#fee2e2", stroke: "#fca5a5", text: "#991b1b" },
+    { id: "runtime", label: "Runtime Error", x: 558, y: 154, fill: "#ffedd5", stroke: "#fdba74", text: "#9a3412" },
   ];
   const arrow = "url(#sm-tip)";
   return (
@@ -341,18 +342,18 @@ function StateMachineDiagram() {
         {/* start dot */}
         <circle cx="8" cy="105" r="6" fill="#111827" />
         {/* straight edges */}
-        <line x1="14" y1="105" x2="18" y2="105" stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow}/>
-        <line x1="148" y1="105" x2="198" y2="105" stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow}/>
-        <line x1="328" y1="105" x2="378" y2="105" stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow}/>
+        <line x1="14" y1="105" x2="18" y2="105" stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow} />
+        <line x1="148" y1="105" x2="198" y2="105" stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow} />
+        <line x1="328" y1="105" x2="378" y2="105" stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow} />
         {/* branch edges from Executing right (508,105) */}
-        <line x1="508" y1="101" x2="558" y2="38" stroke="#059669" strokeWidth="1.5" markerEnd={arrow}/>
-        <line x1="508" y1="105" x2="558" y2="105" stroke="#ef4444" strokeWidth="1.5" markerEnd={arrow}/>
-        <line x1="508" y1="109" x2="558" y2="172" stroke="#f97316" strokeWidth="1.5" markerEnd={arrow}/>
+        <line x1="508" y1="101" x2="558" y2="38" stroke="#059669" strokeWidth="1.5" markerEnd={arrow} />
+        <line x1="508" y1="105" x2="558" y2="105" stroke="#ef4444" strokeWidth="1.5" markerEnd={arrow} />
+        <line x1="508" y1="109" x2="558" y2="172" stroke="#f97316" strokeWidth="1.5" markerEnd={arrow} />
         {/* edge labels */}
         <text x="168" y="100" textAnchor="middle" fontSize="8" fill="#9ca3af">enqueue</text>
         <text x="352" y="100" textAnchor="middle" fontSize="8" fill="#9ca3af">pick up</text>
-        <text x="526" y="72"  textAnchor="middle" fontSize="8" fill="#059669">all pass</text>
-        <text x="526" y="98"  textAnchor="middle" fontSize="8" fill="#ef4444">fail</text>
+        <text x="526" y="72" textAnchor="middle" fontSize="8" fill="#059669">all pass</text>
+        <text x="526" y="98" textAnchor="middle" fontSize="8" fill="#ef4444">fail</text>
         <text x="526" y="130" textAnchor="middle" fontSize="8" fill="#f97316">crash/TLE</text>
         {/* state nodes */}
         {states.map((s) => (
@@ -377,57 +378,57 @@ function DatabaseSchemaDiagram() {
   };
   const boxes = [
     mkBox("User", [
-      { f: "_id",            t: "ObjectId", pk: true  },
-      { f: "userName",       t: "String"              },
-      { f: "email",          t: "String"              },
-      { f: "role",           t: "String"              },
-      { f: "pointsEarned",   t: "Number"              },
-      { f: "questionsSolved",t: "Number"              },
-      { f: "solvedProblems", t: "ObjectId[ ]"         },
+      { f: "_id", t: "ObjectId", pk: true },
+      { f: "userName", t: "String" },
+      { f: "email", t: "String" },
+      { f: "role", t: "String" },
+      { f: "pointsEarned", t: "Number" },
+      { f: "questionsSolved", t: "Number" },
+      { f: "solvedProblems", t: "ObjectId[ ]" },
     ], 20, 20, "#1d4ed8", "#dbeafe"),
     mkBox("Problem", [
-      { f: "_id",        t: "ObjectId", pk: true },
-      { f: "title",      t: "String"             },
-      { f: "difficulty", t: "String"             },
-      { f: "timeLimit",  t: "Number"             },
-      { f: "testcases",  t: "ObjectId[ ]"        },
+      { f: "_id", t: "ObjectId", pk: true },
+      { f: "title", t: "String" },
+      { f: "difficulty", t: "String" },
+      { f: "timeLimit", t: "Number" },
+      { f: "testcases", t: "ObjectId[ ]" },
     ], 495, 20, "#065f46", "#d1fae5"),
     mkBox("Submission", [
-      { f: "_id",      t: "ObjectId", pk: true  },
-      { f: "user",     t: "→ User",   fk: true  },
-      { f: "problem",  t: "→ Problem",fk: true  },
-      { f: "code",     t: "String"              },
-      { f: "language", t: "Number"              },
-      { f: "status",   t: "String"              },
+      { f: "_id", t: "ObjectId", pk: true },
+      { f: "user", t: "→ User", fk: true },
+      { f: "problem", t: "→ Problem", fk: true },
+      { f: "code", t: "String" },
+      { f: "language", t: "Number" },
+      { f: "status", t: "String" },
     ], 258, 240, "#92400e", "#fef3c7"),
     mkBox("Contest", [
-      { f: "_id",        t: "ObjectId", pk: true },
-      { f: "title",      t: "String"             },
-      { f: "startTime",  t: "Date"               },
-      { f: "endTime",    t: "Date"               },
-      { f: "problems",   t: "Obj[prob, pts]"     },
-      { f: "participants",t: "ObjectId[ ]"       },
+      { f: "_id", t: "ObjectId", pk: true },
+      { f: "title", t: "String" },
+      { f: "startTime", t: "Date" },
+      { f: "endTime", t: "Date" },
+      { f: "problems", t: "Obj[prob, pts]" },
+      { f: "participants", t: "ObjectId[ ]" },
     ], 495, 200, "#7c3aed", "#ede9fe"),
     mkBox("Blog", [
-      { f: "_id",       t: "ObjectId", pk: true },
-      { f: "author",    t: "→ User",   fk: true },
-      { f: "title",     t: "String"             },
-      { f: "content",   t: "String"             },
-      { f: "createdAt", t: "Date"               },
+      { f: "_id", t: "ObjectId", pk: true },
+      { f: "author", t: "→ User", fk: true },
+      { f: "title", t: "String" },
+      { f: "content", t: "String" },
+      { f: "createdAt", t: "Date" },
     ], 20, 250, "#9d174d", "#fce7f3"),
   ];
 
   // route lines: [x1,y1, x2,y2 via waypoints]
   // Submission.user → User center-right
-  const userCY  = boxes[0].y + boxes[0].h / 2;  // ~93
-  const probCY  = boxes[1].y + boxes[1].h / 2;  // ~73
-  const subCY   = boxes[2].y + boxes[2].h / 2;  // ~305
-  const blogCY  = boxes[3].y + boxes[3].h / 2;  // ~303
+  const userCY = boxes[0].y + boxes[0].h / 2;  // ~93
+  const probCY = boxes[1].y + boxes[1].h / 2;  // ~73
+  const subCY = boxes[2].y + boxes[2].h / 2;  // ~305
+  const blogCY = boxes[3].y + boxes[3].h / 2;  // ~303
 
   const routes = [
-    { pts: [[258,subCY],[230,subCY],[230,userCY],[215,userCY]],  color:"#3b82f6", label:"user",    lx:232, ly:subCY-4 },
-    { pts: [[453,subCY],[475,subCY],[475,probCY],[495,probCY]],  color:"#10b981", label:"problem", lx:472, ly:subCY-4 },
-    { pts: [[20,blogCY],[4,blogCY],[4,userCY],[20,userCY]],      color:"#ec4899", label:"author",  lx:6,   ly:(blogCY+userCY)/2 },
+    { pts: [[258, subCY], [230, subCY], [230, userCY], [215, userCY]], color: "#3b82f6", label: "user", lx: 232, ly: subCY - 4 },
+    { pts: [[453, subCY], [475, subCY], [475, probCY], [495, probCY]], color: "#10b981", label: "problem", lx: 472, ly: subCY - 4 },
+    { pts: [[20, blogCY], [4, blogCY], [4, userCY], [20, userCY]], color: "#ec4899", label: "author", lx: 6, ly: (blogCY + userCY) / 2 },
   ];
 
   const arrowTip = "url(#erd-tip)";
@@ -498,8 +499,8 @@ function DatabaseSchemaDiagram() {
 function AuthFlowDiagram() {
   const actors = [
     { label: "Browser / Client", x: 110 },
-    { label: "Express API",      x: 355 },
-    { label: "MongoDB",          x: 600 },
+    { label: "Express API", x: 355 },
+    { label: "MongoDB", x: 600 },
   ];
   const arrow = "url(#af-tip)";
   const arrowL = "url(#af-tip-l)";
@@ -507,8 +508,8 @@ function AuthFlowDiagram() {
     <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-4">
       <svg viewBox="0 0 710 345" className="w-full" style={{ minWidth: 560 }}>
         <defs>
-          <marker id="af-tip"   markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6b7280"/></marker>
-          <marker id="af-tip-l" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="#6b7280"/></marker>
+          <marker id="af-tip" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6b7280" /></marker>
+          <marker id="af-tip-l" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="#6b7280" /></marker>
         </defs>
 
         {/* Actor headers */}
@@ -520,58 +521,58 @@ function AuthFlowDiagram() {
         ))}
 
         {/* Phase 1 lifelines */}
-        {actors.map((a) => <line key={a.x} x1={a.x} y1={36} x2={a.x} y2={198} stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,3"/>)}
+        {actors.map((a) => <line key={a.x} x1={a.x} y1={36} x2={a.x} y2={198} stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,3" />)}
 
         {/* Phase 1 Label */}
         <text x={12} y={60} fontSize="8" fill="#9ca3af" fontWeight="700">PHASE 1 — LOGIN</text>
 
         {/* POST /login */}
-        <line x1={110} y1={72} x2={348} y2={72} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow}/>
+        <line x1={110} y1={72} x2={348} y2={72} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow} />
         <text x={228} y={68} textAnchor="middle" fontSize="9" fill="#374151">POST /api/login  {"{ email, password }"}</text>
 
         {/* findUser */}
-        <line x1={355} y1={97} x2={593} y2={97} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow}/>
+        <line x1={355} y1={97} x2={593} y2={97} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow} />
         <text x={474} y={93} textAnchor="middle" fontSize="9" fill="#374151">User.findOne(email)</text>
 
         {/* user doc back */}
-        <line x1={600} y1={122} x2={362} y2={122} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrowL}/>
+        <line x1={600} y1={122} x2={362} y2={122} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrowL} />
         <text x={474} y={118} textAnchor="middle" fontSize="9" fill="#374151">user document</text>
 
         {/* Sign JWT self-note */}
-        <rect x={308} y={133} width={94} height={19} rx="3" fill="#fef3c7" stroke="#d97706" strokeWidth="1"/>
+        <rect x={308} y={133} width={94} height={19} rx="3" fill="#fef3c7" stroke="#d97706" strokeWidth="1" />
         <text x={355} y={146} textAnchor="middle" fontSize="8" fill="#92400e">bcrypt verify + sign JWT</text>
 
         {/* 200 + Set-Cookie */}
-        <line x1={355} y1={164} x2={117} y2={164} stroke="#059669" strokeWidth="1.5" markerEnd={arrowL}/>
+        <line x1={355} y1={164} x2={117} y2={164} stroke="#059669" strokeWidth="1.5" markerEnd={arrowL} />
         <text x={228} y={160} textAnchor="middle" fontSize="9" fill="#059669">200 OK  Set-Cookie: token (httpOnly)</text>
 
         {/* Divider */}
-        <line x1={10} y1={198} x2={700} y2={198} stroke="#e5e7eb" strokeWidth="1"/>
+        <line x1={10} y1={198} x2={700} y2={198} stroke="#e5e7eb" strokeWidth="1" />
 
         {/* Phase 2 lifelines */}
-        {[110, 355].map((x) => <line key={x} x1={x} y1={198} x2={x} y2={340} stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,3"/>)}
+        {[110, 355].map((x) => <line key={x} x1={x} y1={198} x2={x} y2={340} stroke="#d1d5db" strokeWidth="1" strokeDasharray="4,3" />)}
 
         {/* Phase 2 Label */}
         <text x={12} y={218} fontSize="8" fill="#9ca3af" fontWeight="700">PHASE 2 — PROTECTED REQUEST</text>
 
         {/* GET + Cookie */}
-        <line x1={110} y1={230} x2={348} y2={230} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow}/>
+        <line x1={110} y1={230} x2={348} y2={230} stroke="#6b7280" strokeWidth="1.5" markerEnd={arrow} />
         <text x={228} y={226} textAnchor="middle" fontSize="9" fill="#374151">GET /api/...  + Cookie header</text>
 
         {/* Middleware boxes */}
-        <rect x={285} y={242} width={140} height={19} rx="3" fill="#ede9fe" stroke="#7c3aed" strokeWidth="1"/>
+        <rect x={285} y={242} width={140} height={19} rx="3" fill="#ede9fe" stroke="#7c3aed" strokeWidth="1" />
         <text x={355} y={256} textAnchor="middle" fontSize="8" fill="#5b21b6">isAuthenticated middleware</text>
 
-        <rect x={285} y={267} width={140} height={19} rx="3" fill="#ede9fe" stroke="#7c3aed" strokeWidth="1"/>
+        <rect x={285} y={267} width={140} height={19} rx="3" fill="#ede9fe" stroke="#7c3aed" strokeWidth="1" />
         <text x={355} y={281} textAnchor="middle" fontSize="8" fill="#5b21b6">Extract + verify JWT</text>
 
-        <rect x={285} y={292} width={140} height={19} rx="3" fill="#d1fae5" stroke="#059669" strokeWidth="1"/>
+        <rect x={285} y={292} width={140} height={19} rx="3" fill="#d1fae5" stroke="#059669" strokeWidth="1" />
         <text x={355} y={306} textAnchor="middle" fontSize="8" fill="#065f46">Inject userId into req.user</text>
 
         {/* Forward to controller */}
-        <line x1={425} y1={320} x2="514" y2={320} stroke="#059669" strokeWidth="1.5" markerEnd={arrow}/>
+        <line x1={425} y1={320} x2="514" y2={320} stroke="#059669" strokeWidth="1.5" markerEnd={arrow} />
         <text x={468} y={316} textAnchor="middle" fontSize="9" fill="#059669">route handler</text>
-        <rect x={516} y={309} width={110} height={22} rx="5" fill="#111827"/>
+        <rect x={516} y={309} width={110} height={22} rx="5" fill="#111827" />
         <text x={571} y={324} textAnchor="middle" fontSize="10" fill="white" fontWeight="600">Controller</text>
       </svg>
     </div>
@@ -699,7 +700,7 @@ const EngineeringPage = () => {
                 </p>
                 <p>
                   The solution is a classic <strong className="text-gray-900 dark:text-white">producer-consumer
-                  architecture</strong> powered by RabbitMQ. When a user submits code, the API
+                    architecture</strong> powered by RabbitMQ. When a user submits code, the API
                   acknowledges the request immediately and enqueues a job. A separate worker process
                   consumes jobs at its own pace, calls Judge0's sandboxed runtime, resolves the verdict,
                   and pushes the result back to the browser via Socket.io — all outside the HTTP
@@ -713,12 +714,12 @@ const EngineeringPage = () => {
               </div>
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {[
-                  { num: "01", name: "React Frontend",  role: "UI layer",          note: "Submission page, leaderboard, blogs, and user dashboard." },
-                  { num: "02", name: "Express API",     role: "REST monolith",     note: "Single server handling auth, problems, submissions, blogs, and users via 6 route modules." },
-                  { num: "03", name: "Node.js Worker",  role: "Async processor",   note: "RabbitMQ consumer that runs independently — judges code and writes verdicts without blocking the API." },
-                  { num: "04", name: "MongoDB",         role: "Primary datastore", note: "All persistent collections: User, Problem, Submission, Blog, Testcase." },
-                  { num: "05", name: "Redis",           role: "Cache",             note: "Leaderboard caching; sub-millisecond reads for frequently queried rankings." },
-                  { num: "06", name: "RabbitMQ",        role: "Message broker",    note: "SUBMISSION_QUEUE buffers jobs between the API and the worker — durable, survives restarts." },
+                  { num: "01", name: "React Frontend", role: "UI layer", note: "Submission page, leaderboard, blogs, and user dashboard." },
+                  { num: "02", name: "Express API", role: "REST monolith", note: "Single server handling auth, problems, submissions, blogs, and users via 6 route modules." },
+                  { num: "03", name: "Node.js Worker", role: "Async processor", note: "RabbitMQ consumer that runs independently — judges code and writes verdicts without blocking the API." },
+                  { num: "04", name: "MongoDB", role: "Primary datastore", note: "All persistent collections: User, Problem, Submission, Blog, Testcase." },
+                  { num: "05", name: "Redis", role: "Cache", note: "Leaderboard caching; sub-millisecond reads for frequently queried rankings." },
+                  { num: "06", name: "RabbitMQ", role: "Message broker", note: "SUBMISSION_QUEUE buffers jobs between the API and the worker — durable, survives restarts." },
                 ].map((s) => (
                   <div key={s.num} className="flex gap-3 p-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
                     <span className="font-mono text-xs font-bold text-gray-300 dark:text-gray-700 mt-0.5 flex-shrink-0 w-5">{s.num}</span>
@@ -956,17 +957,58 @@ const EngineeringPage = () => {
               </div>
             </section>
 
+            {/* ── Demo Video ── */}
+            <section id="demo">
+              <SectionTitle
+                label="08 / Demo"
+                title="System Demo"
+                subtitle="A walkthrough of HMP OJ in action."
+              />
+              <div className="mt-8 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 aspect-video flex flex-col items-center justify-center relative shadow-sm">
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen>
+                </iframe>
+              </div>
+            </section>
+
             {/* ── Contact ── */}
-            <section id="contact">              {/* Contact CTA */}
-              <div className="mt-10 p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div>
-                  <p className="font-mono font-semibold text-gray-900 dark:text-white">Have questions about the architecture?</p>
-                  <p className="font-mono text-sm text-gray-500 dark:text-gray-400 mt-1">Open a GitHub issue or drop us a message.</p>
+            <section id="contact">
+              <SectionTitle
+                label="09 / Contact"
+                title="Meet the Developer"
+                subtitle="Have questions about the architecture or want to collaborate?"
+              />
+              <div className="mt-8 p-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col md:flex-row items-center gap-8 shadow-sm">
+                {/* Photo Placeholder */}
+                <div className="flex-shrink-0 w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg bg-gray-200 dark:bg-gray-700 relative">
+                  <img
+                    src="/profile.jpg"
+                    alt="Subrat Shakya"
+                    className="w-full h-full object-cover relative z-10"
+                  />
                 </div>
-                <a href="/contact"
-                  className="flex-shrink-0 inline-block font-mono text-sm px-5 py-2.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors">
-                  Contact us →
-                </a>
+
+                <div className="text-center md:text-left flex-1">
+                  <h3 className="font-mono text-2xl font-bold text-gray-900 dark:text-white">Subrat Shakya</h3>
+                  <p className="font-mono text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed max-w-xl">
+                    Software Engineer & Creator of HMP OJ. Passionate about scalable event-driven architectures and full-stack development.
+                  </p>
+                  <div className="mt-6 flex justify-center md:justify-start">
+                    <a
+                      href="https://subratshakya.vercel.app/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 font-mono text-sm px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow hover:shadow-lg transition-all"
+                    >
+                      View Portfolio →
+                    </a>
+                  </div>
+                </div>
               </div>
             </section>
 
