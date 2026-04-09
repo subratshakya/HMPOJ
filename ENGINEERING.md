@@ -133,7 +133,7 @@ We use **Socket.io** to provide an "instantly alive" experience.
 ---
 
 ## 🖼️ Project Screenshots
-> Replace these with actual screenshots of your dashboard to wow your audience!
+
 
 ![Dashboard Main](https://placehold.co/1200x600/1e293b/white?text=Main+Dashboard+Mockup)
 *Real-time problem dashboard with syntax highlighting editor.*
