@@ -25,7 +25,23 @@ import ContestArena from "./Pages/ContestArena";
 import ContestLeaderboard from "./Pages/ContestLeaderboard";
 import CreateContest from "./Pages/CreateContest";
 
+import { useEffect } from "react";
+import axios from "axios";
+
 function App() {
+  useEffect(() => {
+    // Wake up the backend (Render cold-start handling)
+    const wakeup = async () => {
+      try {
+        await axios.get(`${process.env.REACT_APP_API_URL}/ping`);
+        console.log("Backend wake-up call sent ✓");
+      } catch (err) {
+        // Silently fail, it's just a wake-up call
+      }
+    };
+    wakeup();
+  }, []);
+
   return (
     <>
       <BrowserRouter>

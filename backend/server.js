@@ -1,5 +1,6 @@
 const express = require("express");
 const http = require("http");
+const https = require("https");
 const socketIO = require("socket.io");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -20,35 +21,59 @@ const getAllowedOrigins = () => {
   if (process.env.CLIENT_ORIGIN) {
     origins.push(...process.env.CLIENT_ORIGIN.split(",").map((o) => o.trim()));
   }
-  return [...new Set(origins.filter(Boolean))]; // Remove duplicates and falsy values
+  return [...new Set(origins.filter(Boolean))];
 };
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server, {
-  cors: {
-    origin: getAllowedOrigins(),
-    credentials: true,
+
+// Use a more robust CORS configuration
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowed = getAllowedOrigins();
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`Blocked by CORS: ${origin}`);
+      callback(new Error("Not allowed by CORS"));
+    }
   },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+};
+
+app.use(cors(corsOptions));
+// Handle OPTIONS preflight requests explicitly
+app.options("*", cors(corsOptions));
+
+const io = socketIO(server, {
+  cors: corsOptions,
 });
 
-mongoose
+// Health Check & Self-Ping (to keep Render instance awake during activity)
+app.get("/ping", (req, res) => res.status(200).send("pong"));
+
+const selfPing = () => {
+  const url = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 5000}/ping`;
+  const protocol = url.startsWith("https") ? https : http;
+  if (url.startsWith("http")) {
+    protocol.get(url, (res) => {
+      if (res.statusCode === 200) console.log("✓ Self-ping successful");
+    }).on("error", (err) => {
+      console.warn("! Self-ping failed:", err.message);
+    });
+  }
+};
+// Ping every 10 mins
+setInterval(selfPing, 600000);mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27018/hmp_oj")
-  .then(() => console.log("MongoDb connected"))
+  .then(() => console.log("MongoDb connected ✓"))
   .catch((err) => console.log("MongoDb error", err));
 
 // Connect to Redis (caching) and RabbitMQ (async queue) - both are optional
 getRedisClient();
 connectRabbitMQ();
-
-app.use(
-  cors({
-    origin: getAllowedOrigins(),
-    credentials: true,
-  })
-);
-
-
 
 app.use(morgan("dev"));
 app.use(bodyParser.json({ limit: "5mb" }));
