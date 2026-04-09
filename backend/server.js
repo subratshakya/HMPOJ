@@ -11,19 +11,6 @@ const { getRedisClient } = require("./utils/redisClient");
 const { connectRabbitMQ } = require("./utils/rabbitmqClient");
 require("dotenv").config();
 
-const app = express();
-const server = http.createServer(app);
-const io = socketIO(server);
-
-mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27018/hmp_oj")
-  .then(() => console.log("MongoDb connected"))
-  .catch((err) => console.log("MongoDb error", err));
-
-// Connect to Redis (caching) and RabbitMQ (async queue) - both are optional
-getRedisClient();
-connectRabbitMQ();
-
 const getAllowedOrigins = () => {
   const origins = [
     "http://localhost:3000",
@@ -36,12 +23,31 @@ const getAllowedOrigins = () => {
   return [...new Set(origins.filter(Boolean))]; // Remove duplicates and falsy values
 };
 
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server, {
+  cors: {
+    origin: getAllowedOrigins(),
+    credentials: true,
+  },
+});
+
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27018/hmp_oj")
+  .then(() => console.log("MongoDb connected"))
+  .catch((err) => console.log("MongoDb error", err));
+
+// Connect to Redis (caching) and RabbitMQ (async queue) - both are optional
+getRedisClient();
+connectRabbitMQ();
+
 app.use(
   cors({
     origin: getAllowedOrigins(),
     credentials: true,
   })
 );
+
 
 
 app.use(morgan("dev"));
