@@ -32,8 +32,8 @@ const LoginPage = () => {
     console.log("hi");
 
     try {
-      axios.defaults.withCredentials = true;
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/login`, {
+
         userName,
         password,
       });

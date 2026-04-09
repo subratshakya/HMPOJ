@@ -28,7 +28,6 @@ const Dashboard = () => {
   };
   const handleAlluser = async () => {
     try {
-      axios.defaults.withCredentials = true;
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/allusers`);
       setUsers(response.data.users);
       setLoading(false);
@@ -45,7 +44,6 @@ const Dashboard = () => {
 
   const handleAllSubmissions = async () => {
     try {
-      axios.defaults.withCredentials = true;
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/admin/submissions`);
       setAllSubmissions(response.data.submissions);
       setIsSubmissionsClicked(true);
@@ -61,7 +59,6 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        axios.defaults.withCredentials = true;
         const response = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/user/${username}`
         );
@@ -104,7 +101,6 @@ const Dashboard = () => {
 
   const handleUpdateUser = async (userId) => {
     try {
-      axios.defaults.withCredentials = true;
       const { name, userName, email, role } = editedUser;
       await axios.put(`${process.env.REACT_APP_API_URL}/api/user/edit/${userId}`, {
         name,
@@ -126,7 +122,6 @@ const Dashboard = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      axios.defaults.withCredentials = true;
       await axios.delete(
         `${process.env.REACT_APP_API_URL}/api/admin/user/delete/${userId}`
       );

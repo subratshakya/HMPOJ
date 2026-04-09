@@ -24,13 +24,26 @@ mongoose
 getRedisClient();
 connectRabbitMQ();
 
+const getAllowedOrigins = () => {
+  const origins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://hmpoj-blue.vercel.app",
+  ];
+  if (process.env.CLIENT_ORIGIN) {
+    origins.push(...process.env.CLIENT_ORIGIN.split(",").map((o) => o.trim()));
+  }
+  return [...new Set(origins.filter(Boolean))]; // Remove duplicates and falsy values
+};
+
 app.use(
   cors({
-    origin: [process.env.CLIENT_ORIGIN || "http://localhost:3000", "http://localhost:3001"],
+    origin: getAllowedOrigins(),
     credentials: true,
   })
 );
-app.options("*", cors());
+
+
 app.use(morgan("dev"));
 app.use(bodyParser.json({ limit: "5mb" }));
 app.use(

@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
